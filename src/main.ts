@@ -74,7 +74,7 @@ async function bootstrap() {
     console.log(`Sirviendo frontend desde ${webDir}`);
   }
 
-  const swaggerDefault = process.env.NODE_ENV === 'production' ? 'false' : 'true';
+  const swaggerDefault = 'true';
   const swaggerEnabled = (config.get('ENABLE_SWAGGER', swaggerDefault) + '').toLowerCase() === 'true';
   if (swaggerEnabled) {
     const docConfig = new DocumentBuilder()
