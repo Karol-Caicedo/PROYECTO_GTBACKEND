@@ -31,8 +31,12 @@ async function bootstrap() {
   app.useGlobalPipes(tuberíaValidacionHttp());
   app.useGlobalFilters(new AllExceptionsFilter(app.get(AccessPolicyService)));
 
-  const frontendUrl = String(config.get('FRONTEND_URL', 'http://localhost:4200')).replace(/\/+$/, '');
-  const allowedOrigins = new Set([frontendUrl, 'http://localhost:4200']);
+  const frontendUrls = String(config.get('FRONTEND_URL', 'http://localhost:4200'))
+    .split(',')
+    .map((o) => o.trim())
+    .filter((o) => o.length > 0)
+    .map((o) => o.replace(/\/+$/, ''));
+  const allowedOrigins = new Set([...frontendUrls, 'http://localhost:4200']);
   app.use(corsOriginGuard(allowedOrigins, accessLog));
   app.enableCors({
     origin: [...allowedOrigins],
